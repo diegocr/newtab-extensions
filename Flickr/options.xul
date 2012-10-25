@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<setting pref="extensions.{4d4f5a49-4c4c-4100-0013-4e4557544142}.center" type="bool" title="Center background?">
+		Re-enable the Add-On to take effect.
+	</setting>
+</vbox>

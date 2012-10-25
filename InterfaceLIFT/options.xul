@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<setting pref="extensions.{4d4f5a49-4c4c-4100-0014-4e4557544142}.center" type="bool" title="Center background?">
+		Re-enable the Add-On to take effect.
+	</setting>
+	<setting pref="extensions.{4d4f5a49-4c4c-4100-0014-4e4557544142}.interval" type="integer" title="Update Interval">
+		In minutes. Use 0 to disable.
+	</setting>
+	<setting pref="extensions.{4d4f5a49-4c4c-4100-0014-4e4557544142}.resolution" type="menulist" title="Resolution">
+		<menulist>
+			<menupopup>
+				<menuitem value="" label="Random" />
+				<menuitem value="2880x1800" label="2880x1800" />
+				<menuitem value="2560x1600" label="2560x1600" />
+				<menuitem value="2560x1440" label="2560x1440" />
+				<menuitem value="1920x1200" label="1920x1200" />
+				<menuitem value="1680x1050" label="1680x1050" />
+				<menuitem value="1440x900" label="1440x900" />
+				<menuitem value="1280x800" label="1280x800" />
+			</menupopup>
+		</menulist>
+	</setting>
+</vbox>
