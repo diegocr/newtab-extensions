@@ -19,13 +19,13 @@ function startup(aData, aReason) {
 	
 	xhr.addEventListener('load',function(){
 		if(xhr.status == 200) {
-			let m = xhr.responseText.match(/<td class="gallerybox">[\s\S]+?<a href="([^"]+\.(?:jpe?g|gif|png))"/),
-			URL = m && xhr.channel.URI.resolve(m[1]) || null;
+			let URL = xhr.responseText.replace(/[^\d]/g,'');
 			
 			if(URL) {
 				let p = Cc["@mozilla.org/preferences-service;1"]
 					.getService(Ci.nsIPrefService).getBranch('extensions.'+aData.id+'.');
 				
+				URL = 'http://images.skeedz.com/wallpaper/' + URL + '.jpg';
 				xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
 				try {
 					xhr.open('GET', URL, true);
@@ -65,7 +65,7 @@ function startup(aData, aReason) {
 		}
 	},false);
 	
-	xhr.open('GET', 'http://www.skeedz.com/wallpaper.php?show=random', true);
+	xhr.open('GET', 'http://www.skeedz.com/newtab.php', true);
 	xhr.send();
 }
 
