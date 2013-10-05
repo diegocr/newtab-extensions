@@ -12,7 +12,7 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-let {classes: Cc, interfaces: Ci} = Components, ssu;
+let {classes: Cc, interfaces: Ci} = Components, ssu, sst;
 
 function startup(aData, aReason) {
 	let xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
@@ -20,18 +20,18 @@ function startup(aData, aReason) {
 	xhr.addEventListener('load',function(){
 		if(xhr.status == 200) {
 			try {
-				var data = xhr.responseText.replace(/^jsonFlickrFeed\(([\s\S]+)\)$/,'$1')
-					.replace(/,\s+"date_taken":[\s\S]+?"\s+\}\s*(,|\])/g,'}$1')
-					.replace(/\s*"(\w+)": ".*?",\s+/g,'"$1": "",');
-				let m = JSON.parse(data).items;
-				m.sort(function() 0.5 - Math.random());
-				var URL = m.pop().media.m.replace('_m.jpg','_b.jpg');
+				let m = JSON.parse(xhr.responseText);
+				m = m.splice(0, m.length * 40 / 100);
+				m.sort(function() 0.5-Math.random());
+				var URL = m.pop().sizes.o.url;
 			} catch(e) {
 				Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService)
 					.logStringMessage(e.message+' ~ '+aData.id+' '+data);
 			}
 			
 			if(URL) {
+				let p = Cc["@mozilla.org/preferences-service;1"]
+					.getService(Ci.nsIPrefService).getBranch('extensions.'+aData.id+'.');
 				
 				xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
 				try {
@@ -46,23 +46,34 @@ function startup(aData, aReason) {
 				URL = 'data:text/css;charset=utf-8,'
 					+ encodeURIComponent('@-moz-document url(about:newtab){#newtab-scrollbox{'
 					+ (function(c){
-						let p = Cc["@mozilla.org/preferences-service;1"]
-							.getService(Ci.nsIPrefService).getBranch('extensions.'+aData.id+'.');
 						try {	c = p.getBoolPref('center');	}
 						catch(e) {	p.setBoolPref('center', c);	}
 						return c ? 'background-position:50% 50%;' : '';
 					})(true)
 					+ 'background-size:cover;background-image:url("'+URL+'") !important}}');
 				
+				if(ssu) shutdown();
+				
 				let sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Ci.nsIStyleSheetService),
 					uri = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService).newURI(URL, null, null);
 				sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
 				ssu = uri;
+				
+				let iVal = 20;
+				try { iVal = p.getIntPref('interval'); }
+				catch(e) { p.setIntPref('interval', iVal); }
+				
+				if(iVal) {
+					let i = Ci.nsITimer, t = Cc["@mozilla.org/timer;1"].createInstance(i);
+					t.initWithCallback({notify:startup.bind(this,aData)},iVal*60000,i.TYPE_ONE_SHOT);
+					sst = t;
+				}
 			}
 		}
 	},false);
 	
-	xhr.open('GET', 'http://api.flickr.com/services/feeds/photos_public.gne?tags=mozcamp&lang=en-us&format=json', true);
+	let date = new Date(Date.now() - (5 * 31 * 24 * 60 * 60 * 1000)).toISOString().split('T').shift().replace('-','','g');
+	xhr.open('GET', 'http://www.flickr.com/search?data=1&q=mozilla%20summit%20OR%20mozcamp&s=rec&mt=photos&d=taken-'+date+'-&append=1', true);
 	xhr.send();
 }
 
@@ -73,7 +84,9 @@ function shutdown(aData, aReason) {
 	if(ssu) {
 		let sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Ci.nsIStyleSheetService);
 		sss.unregisterSheet(ssu, sss.USER_SHEET);
+		ssu = null;
 	}
+	if(sst) sst.cancel();
 }
 
 function install(aData, aReason) {}
