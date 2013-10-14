@@ -23,10 +23,11 @@ function startup(aData, aReason) {
 				let m = JSON.parse(xhr.responseText);
 				m = m.splice(0, m.length * 40 / 100);
 				m.sort(function() 0.5-Math.random());
-				var URL = m.pop().sizes.o.url;
+				m = m.shift().sizes;
+				var URL = (m.h || m.l || m.o).url;
 			} catch(e) {
 				Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService)
-					.logStringMessage(e.message+' ~ '+aData.id+' '+data);
+					.logStringMessage(e.message+' ~ '+aData.id);
 			}
 			
 			if(URL) {
@@ -72,8 +73,8 @@ function startup(aData, aReason) {
 		}
 	},false);
 	
-	let date = new Date(Date.now() - (5 * 31 * 24 * 60 * 60 * 1000)).toISOString().split('T').shift().replace('-','','g');
-	xhr.open('GET', 'http://www.flickr.com/search?data=1&q=mozilla%20summit%20OR%20mozcamp&s=rec&mt=photos&d=taken-'+date+'-&append=1', true);
+	let date = new Date(Date.now() - (4 * 30 * 24 * 60 * 60 * 1000)).toISOString().split('T').shift().replace('-','','g');
+	xhr.open('GET', 'http://www.flickr.com/search?data=1&q=mozilla%20summit%20OR%20mozcamp&s=int&mt=photos&d=taken-'+date+'-&append=1', true);
 	xhr.send();
 }
 

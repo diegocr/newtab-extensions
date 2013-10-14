@@ -4,7 +4,7 @@
 		<em:id>{4d4f5a49-4c4c-4100-0012-4e4557544142}</em:id>
 		<em:type>2</em:type>
 		<em:name>MozCamp NewTab</em:name>
-		<em:version>1.5.0</em:version>
+		<em:version>1.5.1</em:version>
 		<em:creator>Diego Casorran</em:creator>
 		<em:description>Decorate NewTab's Background using Mozilla's MozCamp Event Photos tagged at Flickr.</em:description>
 		<em:bootstrap>true</em:bootstrap>
