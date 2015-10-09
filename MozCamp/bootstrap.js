@@ -20,11 +20,11 @@ function startup(aData, aReason) {
 	xhr.addEventListener('load',function(){
 		if(xhr.status == 200) {
 			try {
-				let m = JSON.parse(xhr.responseText);
+				let m = JSON.parse(xhr.responseText).photos.photo;
 				m = m.splice(0, m.length * 40 / 100);
 				m.sort(function() 0.5-Math.random());
-				m = m.shift().sizes;
-				var URL = (m.h || m.l || m.o).url;
+				m = m.shift();
+				var URL = m.url_h || m.url_o;
 			} catch(e) {
 				Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService)
 					.logStringMessage(e.message+' ~ '+aData.id);
@@ -73,9 +73,22 @@ function startup(aData, aReason) {
 		}
 	},false);
 	
-	let date = new Date(Date.now() - (4 * 30 * 24 * 60 * 60 * 1000)).toISOString().split('T').shift().replace('-','','g');
-	xhr.open('GET', 'http://www.flickr.com/search?data=1&q=mozilla%20summit%20OR%20mozcamp&s=int&mt=photos&d=taken-'+date+'-&append=1', true);
-	xhr.send();
+	let date = new Date(Date.now() - (4 * 30 * 24 * 60 * 60 * 1000));
+	let formData = new flickerSearchForm();
+	formData.append("extras", "url_o,url_h");
+	formData.append("tags", "mozsummit,mozcamp");
+	formData.append("min_taken_date", (date.getTime() / 1000));
+	xhr.open('POST', 'https://api.flickr.com/services/rest/', true);
+	xhr.send(formData);
+}
+
+function flickerSearchForm () {
+	let formData = Cc['@mozilla.org/files/formdata;1'].createInstance(Ci.nsIDOMFormData);
+	formData.append("method", "flickr.photos.search");
+	formData.append("api_key", "6319252bea53c42693c74970e245542e");
+	formData.append("format", "json");
+	formData.append("nojsoncallback", 1);
+	return formData;
 }
 
 function shutdown(aData, aReason) {
