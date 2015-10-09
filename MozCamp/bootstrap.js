@@ -45,7 +45,7 @@ function startup(aData, aReason) {
 				}
 				
 				URL = 'data:text/css;charset=utf-8,'
-					+ encodeURIComponent('@-moz-document url(about:newtab){#newtab-scrollbox{'
+					+ encodeURIComponent('@-moz-document url(about:newtab){#newtab-vertical-margin{'
 					+ (function(c){
 						try {	c = p.getBoolPref('center');	}
 						catch(e) {	p.setBoolPref('center', c);	}
