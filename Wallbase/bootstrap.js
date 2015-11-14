@@ -20,14 +20,14 @@ function startup(aData, aReason) {
 	
 	xhr.addEventListener('load',function(){
 		if(xhr.status == 200) {
-			let m = xhr.responseText.match(/<a href="([^"]+)" id="drg_thumb/),
-			URL = m && xhr.channel.URI.resolve(m[1]) || null;
+			let m = xhr.responseText.match(/<a class="preview".*?wallpaper\/(\d+)/),
+			URL = m ? 'http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-'+m[1]+'.jpg' : null;
 			
-			if(URL) {
-				xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
-				xhr.addEventListener('load',function(){
-					let m = xhr.responseText.match(/<div id="bigwall"[^>]*>[\s\S]+? src="'\+B\('([^']+)'\)\+'"/),
-					URL = m && xhr.channel.URI.resolve(atob(m[1])) || null;
+			// if(URL) {
+				// xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
+				// xhr.addEventListener('load',function(){
+					// let m = xhr.responseText.match(/<div id="bigwall"[^>]*>[\s\S]+? src="'\+B\('([^']+)'\)\+'"/),
+					// URL = m && xhr.channel.URI.resolve(atob(m[1])) || null;
 					
 					if(URL) {
 						let p = Cc["@mozilla.org/preferences-service;1"]
@@ -69,15 +69,15 @@ function startup(aData, aReason) {
 							sst = t;
 						}
 					}
-				},false);
+				// },false);
 				
-				xhr.open('GET', URL, true);
-				xhr.send();
-			}
+				// xhr.open('GET', URL, true);
+				// xhr.send();
+			// }
 		}
 	},false);
 	
-	xhr.open('GET', 'http://wallbase.cc/random', true);
+	xhr.open('GET', 'http://alpha.wallhaven.cc/random', true);
 	xhr.send();
 }
 
