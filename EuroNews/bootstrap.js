@@ -19,7 +19,7 @@ function startup(aData, aReason) {
 	
 	xhr.addEventListener('load',function(){
 		if(xhr.status == 200) {
-			let m = xhr.responseText.match(/<\/h1>[\s\S]+?<img src="([^"]+\.(?:jpe?g|gif|png))"/),
+			let m = xhr.responseText.match(/<\/h1>[\s\S]+?<img src="([^"]+\.(?:jpe?g|gif|png))/),
 			URL = m && xhr.channel.URI.resolve(m[1]) || null;
 			
 			if(URL) {
