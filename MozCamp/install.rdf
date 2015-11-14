@@ -7,13 +7,14 @@
 		<em:version>1.5.1</em:version>
 		<em:creator>Diego Casorran</em:creator>
 		<em:description>Decorate NewTab's Background using Mozilla's MozCamp Event Photos tagged at Flickr.</em:description>
+		<em:contributor>Szabolcs Hubai</em:contributor>
 		<em:bootstrap>true</em:bootstrap>
 		<em:targetApplication>
 			<Description>
 				<!-- Firefox -->
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 				<em:minVersion>13.0</em:minVersion>
-				<em:maxVersion>24.*</em:maxVersion>
+				<em:maxVersion>42.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 	</Description>
