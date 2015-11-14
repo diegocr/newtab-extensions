@@ -49,7 +49,7 @@ function startup(aData, aReason) {
 				}
 				
 				let css = 'data:text/css;charset=utf-8,'
-					+ encodeURIComponent('@-moz-document url(about:newtab){#newtab-scrollbox{'
+					+ encodeURIComponent('@-moz-document url(about:newtab){#newtab-scrollbox,#newtab-vertical-margin{'
 					+ (function(c){
 						let p = Cc["@mozilla.org/preferences-service;1"]
 							.getService(Ci.nsIPrefService).getBranch('extensions.'+aData.id+'.');

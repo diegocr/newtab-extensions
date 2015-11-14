@@ -4,7 +4,7 @@
 		<em:id>{4d4f5a49-4c4c-4100-0009-4e4557544142}</em:id>
 		<em:type>2</em:type>
 		<em:name>PaperWall NewTab</em:name>
-		<em:version>1.4</em:version>
+		<em:version>1.5.0</em:version>
 		<em:creator>Diego Casorran</em:creator>
 		<em:description>Decorate NewTab's Background using ThePaperWall's Wallpaper of the Day.</em:description>
 		<em:bootstrap>true</em:bootstrap>

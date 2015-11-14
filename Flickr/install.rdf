@@ -4,7 +4,7 @@
 		<em:id>{4d4f5a49-4c4c-4100-0013-4e4557544142}</em:id>
 		<em:type>2</em:type>
 		<em:name>Flickr NewTab</em:name>
-		<em:version>1.4</em:version>
+		<em:version>1.5.0</em:version>
 		<em:creator>Diego Casorran</em:creator>
 		<em:description>Decorate NewTab's Background using Flickr's Week Interesting Photos.</em:description>
 		<em:contributor>Szabolcs Hubai</em:contributor>
