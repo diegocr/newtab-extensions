@@ -19,8 +19,15 @@ function startup(aData, aReason) {
 	
 	xhr.addEventListener('load',function(){
 		if(xhr.status == 200) {
-			let m = xhr.responseText.match(/a data-track="thumb"[^>]+><img src="([^"]+)_m.jpg"/),
-			URL = m && xhr.channel.URI.resolve(m[1]+'_b.jpg') || null;
+			try {
+				let m = JSON.parse(xhr.responseText).photos.photo;
+				m.sort(function() 0.5-Math.random());
+				m = m.shift();
+				var URL = m.url_l || m.url_h || null;
+			} catch(e) {
+				Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService)
+					.logStringMessage(e.message+' ~ '+aData.id);
+			}
 			
 			if(URL) {
 				
@@ -53,8 +60,20 @@ function startup(aData, aReason) {
 		}
 	},false);
 	
-	xhr.open('GET', 'http://www.flickr.com/explore/interesting/7days/', true);
-	xhr.send();
+	let formData = new flickerInterestingnessForm();
+	formData.append("extras", "url_l,url_h");
+	formData.append("per_page", 500);
+	xhr.open('POST', 'https://api.flickr.com/services/rest/', true);
+	xhr.send(formData);
+}
+
+function flickerInterestingnessForm () {
+	let formData = Cc['@mozilla.org/files/formdata;1'].createInstance(Ci.nsIDOMFormData);
+	formData.append("method", "flickr.interestingness.getList");
+	formData.append("api_key", "7cef40b1fbba6eccddc67f6263481cff");
+	formData.append("format", "json");
+	formData.append("nojsoncallback", 1);
+	return formData;
 }
 
 function shutdown(aData, aReason) {
